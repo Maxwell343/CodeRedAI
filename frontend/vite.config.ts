@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
-  base: '/CodeRedAI/', // keep this (for GitHub Pages)
+  base: process.env.VERCEL ? '/' : '/CodeRedAI/',
 
   plugins: [react()],
 
