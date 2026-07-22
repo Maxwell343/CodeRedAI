@@ -1278,14 +1278,12 @@ export function LiveMission() {
   ]);
 
   const showMarkAsPickedButton =
-    missionStatus !== 'completed' && missionStatusOverride !== 'picked_up' && pickupArrivalDetected;
+    activeLeg === 'to_pickup' && missionStatus !== 'completed' && missionStatusOverride !== 'picked_up' && pickupArrivalDetected;
 
-  const reachedHospital = hospitalDistance <= ARRIVAL_METERS || hasArrived;
+  const reachedHospital = activeLeg === 'to_hospital' && (hospitalDistance <= ARRIVAL_METERS || hasArrived);
 
   const showMarkAsCompletedButton =
-    missionStatus !== 'completed' &&
-    reachedHospital &&
-    (activeLeg === 'to_hospital' || usingApiMission);
+    activeLeg === 'to_hospital' && missionStatus !== 'completed' && reachedHospital;
 
   useEffect(() => {
     if (!showMarkAsPickedButton || pickupArrivalAnnouncedRef.current) {

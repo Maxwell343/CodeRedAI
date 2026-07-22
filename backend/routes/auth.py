@@ -2,52 +2,28 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Response, status
 
-try:
-    from ..schemas.auth import (
-        AdminAuthResponse,
-        AdminSignupRequest,
-        DriverAuthResponse,
-        DriverSignupRequest,
-        HospitalAuthResponse,
-        HospitalSignupRequest,
-        LoginRequest,
-        PresetDriverResponse,
-        PresetHospitalResponse,
-    )
-    from ..services.auth_service import (
-        get_preset_drivers,
-        get_preset_hospitals,
-        login_admin,
-        login_driver,
-        login_hospital,
-        signup_admin,
-        signup_driver,
-        signup_hospital,
-    )
-    from ..utils.jwt_handler import set_access_cookie
-except ImportError:  # pragma: no cover - compatibility for `uvicorn app.main:app`
-    from schemas.auth import (
-        AdminAuthResponse,
-        AdminSignupRequest,
-        DriverAuthResponse,
-        DriverSignupRequest,
-        HospitalAuthResponse,
-        HospitalSignupRequest,
-        LoginRequest,
-        PresetDriverResponse,
-        PresetHospitalResponse,
-    )
-    from services.auth_service import (
-        get_preset_drivers,
-        get_preset_hospitals,
-        login_admin,
-        login_driver,
-        login_hospital,
-        signup_admin,
-        signup_driver,
-        signup_hospital,
-    )
-    from utils.jwt_handler import set_access_cookie
+from schemas.auth import (
+    AdminAuthResponse,
+    AdminSignupRequest,
+    DriverAuthResponse,
+    DriverSignupRequest,
+    HospitalAuthResponse,
+    HospitalSignupRequest,
+    LoginRequest,
+    PresetDriverResponse,
+    PresetHospitalResponse,
+)
+from services.auth_service import (
+    get_preset_drivers,
+    get_preset_hospitals,
+    login_admin,
+    login_driver,
+    login_hospital,
+    signup_admin,
+    signup_driver,
+    signup_hospital,
+)
+from utils.jwt_handler import set_access_cookie
 
 router = APIRouter()
 

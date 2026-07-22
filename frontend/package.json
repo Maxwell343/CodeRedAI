@@ -2,7 +2,7 @@
   "name": "coderedai-frontend",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://markmenezes7.github.io/CodeRedAI/",
+  "homepage": "https://maxwell343.github.io/CodeRedAI/",
   "type": "module",
   "scripts": {
     "dev": "vite",

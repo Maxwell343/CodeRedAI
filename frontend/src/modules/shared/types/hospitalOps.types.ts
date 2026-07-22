@@ -41,6 +41,7 @@ export interface HospitalLocationRef {
   name: string;
   address: string;
   phone?: string;
+  bedCapacity?: number;
   location: GeoPoint;
 }
 

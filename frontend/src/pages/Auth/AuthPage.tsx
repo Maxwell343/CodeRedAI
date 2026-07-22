@@ -34,14 +34,14 @@ const ROLE_CONFIG: Record<AppRole, RoleConfig> = {
     subtitle: 'Manage emergency intake and dispatch from your hospital command dashboard.',
     signupNameLabel: 'Hospital Name',
     signupNamePlaceholder: 'Enter hospital name',
-    emailPlaceholder: 'hospital1@gmail.com',
+    emailPlaceholder: 'apollo.er@codered.ai',
   },
   driver: {
     label: 'Driver',
     subtitle: 'Access live missions, route guidance, and earnings insights in one place.',
     signupNameLabel: 'Driver Name',
     signupNamePlaceholder: 'Enter driver name',
-    emailPlaceholder: 'driver1@gmail.com',
+    emailPlaceholder: 'driver.rajesh@codered.ai',
   },
   admin: {
     label: 'Admin',
@@ -83,11 +83,11 @@ function getCurrentHashPath(): string {
 
 function initialEmailByRole(role: AppRole, hospitalEmails: string[], driverEmails: string[]) {
   if (role === 'hospital') {
-    return hospitalEmails[0] || 'hospital1@gmail.com';
+    return hospitalEmails[0] || 'apollo.er@codered.ai';
   }
 
   if (role === 'driver') {
-    return driverEmails[0] || 'driver1@gmail.com';
+    return driverEmails[0] || 'driver.rajesh@codered.ai';
   }
 
   return ADMIN_QUICK_FILL_EMAILS[0];
@@ -192,14 +192,14 @@ export function AuthPage() {
 
   const credentialHint = useMemo(() => {
     if (selectedRole === 'hospital') {
-      return `Use hospital1@gmail.com ... hospital10@gmail.com with password ${defaultHospitalPassword || 'Password@123'}.`;
+      return `Click any demo hospital below or use password ${defaultHospitalPassword || 'Password@123'}.`;
     }
 
     if (selectedRole === 'driver') {
-      return `Use driver1@gmail.com ... driver8@gmail.com with password ${defaultDriverPassword || 'Password@123'}.`;
+      return `Click any demo driver below or use password ${defaultDriverPassword || 'Password@123'}.`;
     }
 
-    return `Use approved admin credentials. Demo password is ${ADMIN_DEFAULT_PASSWORD}.`;
+    return `Click any demo admin below or use password ${ADMIN_DEFAULT_PASSWORD}.`;
   }, [selectedRole, defaultHospitalPassword, defaultDriverPassword]);
 
   const setExclusiveSessionForRole = useCallback(

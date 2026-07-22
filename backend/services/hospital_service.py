@@ -16,12 +16,8 @@ from typing import Any
 from bson import ObjectId
 from pymongo.errors import PyMongoError
 
-try:
-    from ..database import get_emergencies_collection, get_hospitals_collection
-    from .emergency_service import dispatch_ambulance
-except ImportError:
-    from database import get_emergencies_collection, get_hospitals_collection
-    from services.emergency_service import dispatch_ambulance
+from database import get_emergencies_collection, get_hospitals_collection
+from services.emergency_service import dispatch_ambulance
 
 _logger = logging.getLogger(__name__)
 
@@ -229,10 +225,7 @@ def accept_emergency(hospital_id: str, emergency_id: str) -> dict[str, Any]:
             lat = loc.get("lat")
             lng = loc.get("lng")
             if lat is not None and lng is not None:
-                try:
-                    from .driver_service import find_nearest_drivers, create_driver_offers
-                except ImportError:
-                    from services.driver_service import find_nearest_drivers, create_driver_offers
+                from services.driver_service import find_nearest_drivers, create_driver_offers
                 
                 existing_offers = doc.get("driver_offers", [])
                 exclude_ids = [o["driver_id"] for o in existing_offers]

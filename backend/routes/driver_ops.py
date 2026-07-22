@@ -18,62 +18,33 @@ import logging
 
 from fastapi import APIRouter, HTTPException, Query, status
 
-try:
-    from ..schemas.driver_ops import (
-        ActiveMission,
-        ActiveMissionResponse,
-        DriverLocationUpdate,
-        DriverOfferAction,
-        DriverOfferItem,
-        DriverOffersResponse,
-        DriverOfferActionResponse,
-        LocationUpdateResponse,
-        MissionStatusUpdate,
-        MissionUpdateResponse,
-        RecommendedHospital,
-    )
-    from ..services.driver_service import (
-        accept_driver_offer,
-        get_active_mission,
-        get_driver_earnings,
-        get_driver_mission_history,
-        get_driver_profile,
-        get_driver_stats,
-        get_pending_offers_for_driver,
-        reject_driver_offer,
-        update_driver_location,
-        update_driver_profile,
-        update_driver_settings,
-        update_mission_status,
-    )
-except ImportError:
-    from schemas.driver_ops import (
-        ActiveMission,
-        ActiveMissionResponse,
-        DriverLocationUpdate,
-        DriverOfferAction,
-        DriverOfferItem,
-        DriverOffersResponse,
-        DriverOfferActionResponse,
-        LocationUpdateResponse,
-        MissionStatusUpdate,
-        MissionUpdateResponse,
-        RecommendedHospital,
-    )
-    from services.driver_service import (
-        accept_driver_offer,
-        get_active_mission,
-        get_driver_earnings,
-        get_driver_mission_history,
-        get_driver_profile,
-        get_driver_stats,
-        get_pending_offers_for_driver,
-        reject_driver_offer,
-        update_driver_location,
-        update_driver_profile,
-        update_driver_settings,
-        update_mission_status,
-    )
+from schemas.driver_ops import (
+    ActiveMission,
+    ActiveMissionResponse,
+    DriverLocationUpdate,
+    DriverOfferAction,
+    DriverOfferItem,
+    DriverOffersResponse,
+    DriverOfferActionResponse,
+    LocationUpdateResponse,
+    MissionStatusUpdate,
+    MissionUpdateResponse,
+    RecommendedHospital,
+)
+from services.driver_service import (
+    accept_driver_offer,
+    get_active_mission,
+    get_driver_earnings,
+    get_driver_mission_history,
+    get_driver_profile,
+    get_driver_stats,
+    get_pending_offers_for_driver,
+    reject_driver_offer,
+    update_driver_location,
+    update_driver_profile,
+    update_driver_settings,
+    update_mission_status,
+)
 
 _logger = logging.getLogger(__name__)
 router = APIRouter()

@@ -154,8 +154,8 @@ const reviewAvatars = [
 
 const galleryImages = {
   top: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=900&q=80',
-  main: 'https://sudhahospitals.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Femergency-overview.40fb9415.webp&w=3840&q=75',
-  side: 'https://rubyhall.com/img/services/accident/accident-sassoon.jpg',
+  main: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80',
+  side: 'https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80',
 };
 
 const heartbeatPath =

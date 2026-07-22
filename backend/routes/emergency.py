@@ -15,64 +15,34 @@ import logging
 
 from fastapi import APIRouter, HTTPException, Query, status
 
-try:
-    from ..schemas.emergency import (
-        AcceptEmergencyRequest,
-        AcceptEmergencyResponse,
-        AmbulanceInfo,
-        CreateEmergencyRequest,
-        CreateEmergencyResponse,
-        NotifiedHospitalInfo,
-        PendingEmergenciesResponse,
-        PendingEmergencyItem,
-        RejectEmergencyRequest,
-        RejectEmergencyResponse,
-    )
-    from ..services.emergency_service import (
-        VALID_EMERGENCY_TYPES,
-        create_emergency,
-        save_to_db,
-    )
-    from ..services.hospital_service import (
-        accept_emergency,
-        find_nearest_hospitals,
-        get_pending_emergencies,
-        notify_hospitals,
-        reject_emergency,
-    )
-    from ..services.driver_service import (
-        find_nearest_drivers,
-        create_driver_offers,
-    )
-except ImportError:
-    from schemas.emergency import (
-        AcceptEmergencyRequest,
-        AcceptEmergencyResponse,
-        AmbulanceInfo,
-        CreateEmergencyRequest,
-        CreateEmergencyResponse,
-        NotifiedHospitalInfo,
-        PendingEmergenciesResponse,
-        PendingEmergencyItem,
-        RejectEmergencyRequest,
-        RejectEmergencyResponse,
-    )
-    from services.emergency_service import (
-        VALID_EMERGENCY_TYPES,
-        create_emergency,
-        save_to_db,
-    )
-    from services.hospital_service import (
-        accept_emergency,
-        find_nearest_hospitals,
-        get_pending_emergencies,
-        notify_hospitals,
-        reject_emergency,
-    )
-    from services.driver_service import (
-        find_nearest_drivers,
-        create_driver_offers,
-    )
+from schemas.emergency import (
+    AcceptEmergencyRequest,
+    AcceptEmergencyResponse,
+    AmbulanceInfo,
+    CreateEmergencyRequest,
+    CreateEmergencyResponse,
+    NotifiedHospitalInfo,
+    PendingEmergenciesResponse,
+    PendingEmergencyItem,
+    RejectEmergencyRequest,
+    RejectEmergencyResponse,
+)
+from services.driver_service import (
+    create_driver_offers,
+    find_nearest_drivers,
+)
+from services.emergency_service import (
+    VALID_EMERGENCY_TYPES,
+    create_emergency,
+    save_to_db,
+)
+from services.hospital_service import (
+    accept_emergency,
+    find_nearest_hospitals,
+    get_pending_emergencies,
+    notify_hospitals,
+    reject_emergency,
+)
 
 _logger = logging.getLogger(__name__)
 router = APIRouter()

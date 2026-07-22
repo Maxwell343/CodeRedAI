@@ -35,14 +35,10 @@ from fastapi import APIRouter, Request
 from fastapi.responses import PlainTextResponse
 from twilio.twiml.messaging_response import MessagingResponse
 
-try:
-    from ..services.emergency_service import create_emergency, save_to_db
-    from ..services.hospital_service import find_nearest_hospitals, notify_hospitals
-    from ..services.driver_service import find_nearest_drivers, create_driver_offers
-except ImportError:
-    from services.emergency_service import create_emergency, save_to_db
-    from services.hospital_service import find_nearest_hospitals, notify_hospitals
-    from services.driver_service import find_nearest_drivers, create_driver_offers
+from database import get_emergencies_collection
+from services.driver_service import create_driver_offers, find_nearest_drivers
+from services.emergency_service import create_emergency, save_to_db
+from services.hospital_service import find_nearest_hospitals, notify_hospitals
 
 _logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -594,10 +590,7 @@ async def whatsapp_webhook(request: Request) -> PlainTextResponse:
                 if hospitals or drivers:
                     try:
                         from bson import ObjectId
-                        try:
-                            from ..database import get_emergencies_collection
-                        except ImportError:
-                            from database import get_emergencies_collection
+
                         new_status = "DRIVER_NOTIFIED" if drivers else "HOSPITAL_NOTIFIED"
                         get_emergencies_collection().update_one(
                             {"_id": ObjectId(emergency_id)},

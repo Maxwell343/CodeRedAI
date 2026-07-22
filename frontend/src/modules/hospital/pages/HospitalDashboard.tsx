@@ -29,7 +29,7 @@ import {
   RequestStatus,
   SeverityLevel,
 } from '@shared/types/hospitalOps.types';
-import { createInitialHospitalOpsState } from '@shared/utils/hospitalDemoData';
+import { createInitialHospitalOpsState, isDemoHospitalAccount } from '@shared/utils/hospitalDemoData';
 import {
   addIncomingPatientRequest,
   buildRoadRoute,
@@ -239,17 +239,18 @@ function stateStorageKey(hospitalId: string) {
   return `${STORAGE_KEY_PREFIX}-${hospitalId}`;
 }
 
-function loadInitialState(hospitalRef: HospitalLocationRef) {
-  if (typeof window === 'undefined') return createInitialHospitalOpsState(hospitalRef);
+function loadInitialState(hospitalRef: HospitalLocationRef, email?: string) {
+  const isDemo = isDemoHospitalAccount(hospitalRef.id, email);
+  if (typeof window === 'undefined') return createInitialHospitalOpsState(hospitalRef, isDemo);
   const persisted = window.localStorage.getItem(stateStorageKey(hospitalRef.id));
-  if (!persisted) return createInitialHospitalOpsState(hospitalRef);
+  if (!persisted) return createInitialHospitalOpsState(hospitalRef, isDemo);
   try {
     const parsed = JSON.parse(persisted) as unknown;
     if (isHospitalOpsState(parsed)) return parsed;
   } catch {
-    return createInitialHospitalOpsState(hospitalRef);
+    return createInitialHospitalOpsState(hospitalRef, isDemo);
   }
-  return createInitialHospitalOpsState(hospitalRef);
+  return createInitialHospitalOpsState(hospitalRef, isDemo);
 }
 
 function createEvent(type: OpsEventType, message: string, requestId?: string, driverId?: string): OpsEvent {
@@ -391,7 +392,7 @@ export function HospitalDashboard() {
     [hospitalUser],
   );
 
-  const [opsState, setOpsState] = useState<HospitalOpsState>(() => loadInitialState(activeHospitalRef));
+  const [opsState, setOpsState] = useState<HospitalOpsState>(() => loadInitialState(activeHospitalRef, hospitalUser?.email));
   const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
   const [selectedDriverId, setSelectedDriverId] = useState<string | null>(null);
   const [requestFilter, setRequestFilter] = useState<'all' | RequestStatus>('all');
@@ -428,7 +429,7 @@ export function HospitalDashboard() {
       return;
     }
 
-    setOpsState(loadInitialState(activeHospitalRef));
+    setOpsState(loadInitialState(activeHospitalRef, hospitalUser.email));
     setSelectedRequestId(null);
     setSelectedDriverId(null);
     setRequestFilter('all');
@@ -650,7 +651,8 @@ export function HospitalDashboard() {
   };
 
   const handleResetDemo = () => {
-    setOpsState(createInitialHospitalOpsState(activeHospitalRef));
+    const isDemo = isDemoHospitalAccount(activeHospitalRef.id, hospitalUser?.email);
+    setOpsState(createInitialHospitalOpsState(activeHospitalRef, isDemo));
     setSelectedDriverId(null);
     setSelectedRequestId(null);
     setRequestFilter('all');
@@ -1021,65 +1023,69 @@ export function HospitalDashboard() {
 
               {/* Dashboard insight grid */}
               <section className="hospital-dashboard-grid" aria-label="Dashboard analytics panels">
-                <section className="hospital-panel dashboard-insight-panel">
-                  <div className="panel-head"><h2>Queue Snapshot</h2><p>Highest-acuity patients currently waiting.</p></div>
-                  {recentPriorityRequests.length === 0 ? (
-                    <p className="empty-state">No open patient requests right now.</p>
-                  ) : (
-                    <div className="dashboard-priority-list">
-                      {recentPriorityRequests.map((r) => (
-                        <article key={r.id} className="dashboard-priority-item">
-                          <div><strong>{r.id}</strong><p>{r.patientName} â€” {r.symptom}</p></div>
-                          <div className="dashboard-priority-item-meta">
-                            <StatusBadge label={r.severity} tone={severityTone[r.severity]} />
-                            <span>{formatDate(r.reportedAt)}</span>
+                <div className="dashboard-column">
+                  <section className="hospital-panel dashboard-insight-panel">
+                    <div className="panel-head"><h2>Queue Snapshot</h2><p>Highest-acuity patients currently waiting.</p></div>
+                    {recentPriorityRequests.length === 0 ? (
+                      <p className="empty-state">No open patient requests right now.</p>
+                    ) : (
+                      <div className="dashboard-priority-list">
+                        {recentPriorityRequests.map((r) => (
+                          <article key={r.id} className="dashboard-priority-item">
+                            <div><strong>{r.id}</strong><p>{r.patientName} — {r.symptom}</p></div>
+                            <div className="dashboard-priority-item-meta">
+                              <StatusBadge label={r.severity} tone={severityTone[r.severity]} />
+                              <span>{formatDate(r.reportedAt)}</span>
+                            </div>
+                          </article>
+                        ))}
+                      </div>
+                    )}
+                    <button type="button" className="btn btn-primary" onClick={() => handleSectionChange('queue')}>Open Patient Queue</button>
+                  </section>
+
+                  <section className="hospital-panel dashboard-insight-panel">
+                    <div className="panel-head"><h2>Capacity Pressure</h2><p>Real-time occupancy pressure against total bed stock.</p></div>
+                    <div className="capacity-meter" aria-hidden="true">
+                      <span style={{ width: `${Math.min(100, Math.round(bedPressure * 100))}%` }} />
+                    </div>
+                    <p className="capacity-copy">{Math.round(bedPressure * 100)}% occupied — {availableBeds} beds and {availableIcuBeds} ICU beds available.</p>
+                    <div className="capacity-actions">
+                      <button type="button" className="btn btn-secondary" onClick={() => handleBedAdjustment('occupiedBeds', -1, 'Occupied beds')}>Release 1 Bed</button>
+                      <button type="button" className="btn btn-primary" onClick={() => handleSectionChange('beds')}>Open Bed Manager</button>
+                    </div>
+                  </section>
+                </div>
+
+                <div className="dashboard-column">
+                  <section className="hospital-panel dashboard-insight-panel">
+                    <div className="panel-head"><h2>Fleet Health</h2><p>Availability, fuel, and connectivity at a glance.</p></div>
+                    <dl className="dashboard-stat-grid">
+                      <div><dt>Availability</dt><dd>{availableFleetPct}%</dd></div>
+                      <div><dt>Offline Units</dt><dd>{offlineDrivers}</dd></div>
+                      <div><dt>Low Fuel Units</dt><dd>{lowFuelDrivers}</dd></div>
+                      <div><dt>Average Fuel</dt><dd>{averageFuelPct}%</dd></div>
+                      <div><dt>Completed Cases</dt><dd>{completionRate}%</dd></div>
+                      <div><dt>Active Trips</dt><dd>{activeTrips}</dd></div>
+                    </dl>
+                    <button type="button" className="btn btn-secondary" onClick={() => handleSectionChange('ambulance')}>Open Ambulance Dashboard</button>
+                  </section>
+
+                  <section className="timeline-panel" aria-label="Operations timeline">
+                    <div className="panel-head compact"><h3>Ops Timeline</h3><p>Dispatch, triage and capacity events.</p></div>
+                    <div className="timeline-list">
+                      {opsState.events.slice(0, 12).map((event) => (
+                        <article className="timeline-item" key={event.id}>
+                          <div className="timeline-item-head">
+                            <StatusBadge label={event.type} tone={eventTone(event.type)} />
+                            <time>{formatDate(event.at)}</time>
                           </div>
+                          <p>{event.message}</p>
                         </article>
                       ))}
                     </div>
-                  )}
-                  <button type="button" className="btn btn-primary" onClick={() => handleSectionChange('queue')}>Open Patient Queue</button>
-                </section>
-
-                <section className="hospital-panel dashboard-insight-panel">
-                  <div className="panel-head"><h2>Fleet Health</h2><p>Availability, fuel, and connectivity at a glance.</p></div>
-                  <dl className="dashboard-stat-grid">
-                    <div><dt>Availability</dt><dd>{availableFleetPct}%</dd></div>
-                    <div><dt>Offline Units</dt><dd>{offlineDrivers}</dd></div>
-                    <div><dt>Low Fuel Units</dt><dd>{lowFuelDrivers}</dd></div>
-                    <div><dt>Average Fuel</dt><dd>{averageFuelPct}%</dd></div>
-                    <div><dt>Completed Cases</dt><dd>{completionRate}%</dd></div>
-                    <div><dt>Active Trips</dt><dd>{activeTrips}</dd></div>
-                  </dl>
-                  <button type="button" className="btn btn-secondary" onClick={() => handleSectionChange('ambulance')}>Open Ambulance Dashboard</button>
-                </section>
-
-                <section className="hospital-panel dashboard-insight-panel">
-                  <div className="panel-head"><h2>Capacity Pressure</h2><p>Real-time occupancy pressure against total bed stock.</p></div>
-                  <div className="capacity-meter" aria-hidden="true">
-                    <span style={{ width: `${Math.min(100, Math.round(bedPressure * 100))}%` }} />
-                  </div>
-                  <p className="capacity-copy">{Math.round(bedPressure * 100)}% occupied â€” {availableBeds} beds and {availableIcuBeds} ICU beds available.</p>
-                  <div className="capacity-actions">
-                    <button type="button" className="btn btn-secondary" onClick={() => handleBedAdjustment('occupiedBeds', -1, 'Occupied beds')}>Release 1 Bed</button>
-                    <button type="button" className="btn btn-primary" onClick={() => handleSectionChange('beds')}>Open Bed Manager</button>
-                  </div>
-                </section>
-
-                <section className="timeline-panel" aria-label="Operations timeline">
-                  <div className="panel-head compact"><h3>Ops Timeline</h3><p>Dispatch, triage and capacity events.</p></div>
-                  <div className="timeline-list">
-                    {opsState.events.slice(0, 12).map((event) => (
-                      <article className="timeline-item" key={event.id}>
-                        <div className="timeline-item-head">
-                          <StatusBadge label={event.type} tone={eventTone(event.type)} />
-                          <time>{formatDate(event.at)}</time>
-                        </div>
-                        <p>{event.message}</p>
-                      </article>
-                    ))}
-                  </div>
-                </section>
+                  </section>
+                </div>
               </section>
             </>
           )}

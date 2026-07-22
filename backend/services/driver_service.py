@@ -17,10 +17,7 @@ from typing import Any
 from bson import ObjectId
 from pymongo.errors import PyMongoError
 
-try:
-    from ..database import get_drivers_collection, get_emergencies_collection
-except ImportError:
-    from database import get_drivers_collection, get_emergencies_collection
+from database import get_drivers_collection, get_emergencies_collection, get_hospitals_collection
 
 _logger = logging.getLogger(__name__)
 
@@ -680,11 +677,6 @@ def get_active_mission(driver_id: str) -> dict[str, Any] | None:
 def _resolve_hospital_details(hospital_id: str) -> dict[str, Any] | None:
     """Fetch hospital name + GeoJSON coordinates for a hospital_id."""
     try:
-        try:
-            from ..database import get_hospitals_collection
-        except ImportError:
-            from database import get_hospitals_collection
-
         hospital = get_hospitals_collection().find_one({"hospital_id": hospital_id})
         if not hospital:
             return None
@@ -724,10 +716,7 @@ def _auto_assign_nearest_hospital(
     Returns a hospital details dict on success, or None if no hospital found.
     """
     try:
-        try:
-            from ..services.hospital_service import find_nearest_hospitals
-        except ImportError:
-            from services.hospital_service import find_nearest_hospitals
+        from services.hospital_service import find_nearest_hospitals
     except Exception:
         _logger.error("[AUTO HOSPITAL] Could not import hospital_service")
         return None

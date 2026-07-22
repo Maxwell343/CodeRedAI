@@ -411,10 +411,46 @@ function cloneEvent(event: OpsEvent): OpsEvent {
   };
 }
 
-export function createInitialHospitalOpsState(hospitalOverride?: HospitalLocationRef): HospitalOpsState {
+export function isDemoHospitalAccount(hospitalId?: string, email?: string): boolean {
+  const e = (email || '').toLowerCase().trim();
+  const id = (hospitalId || '').toUpperCase().trim();
+
+  if (e.endsWith('@codered.ai')) return true;
+  const demoIds = ['HSP-APOLLO', 'HSP-LILAVATI', 'HSP-FORTIS', 'HSP-KOKILABEN', 'HSP-NANAVATI', 'HSP-RUBY', 'HSP-MUM-009', 'HSP-BVR1', 'HSP-BVR2'];
+  return demoIds.includes(id);
+}
+
+export function createInitialHospitalOpsState(hospitalOverride?: HospitalLocationRef, isDemo: boolean = true): HospitalOpsState {
   const baseHospital = cloneHospital(DEMO_HOSPITAL, hospitalOverride);
   const deltaLat = baseHospital.location.lat - DEMO_HOSPITAL.location.lat;
   const deltaLng = baseHospital.location.lng - DEMO_HOSPITAL.location.lng;
+
+  if (!isDemo) {
+    const freshTotalBeds = hospitalOverride?.bedCapacity ?? baseHospital.beds.totalBeds ?? 50;
+    return {
+      hospital: {
+        ...baseHospital,
+        beds: {
+          totalBeds: freshTotalBeds,
+          occupiedBeds: 0,
+          icuTotal: Math.round(freshTotalBeds * 0.2),
+          icuOccupied: 0,
+        },
+      },
+      drivers: [],
+      requests: [],
+      events: [
+        {
+          id: 'EVT-0',
+          at: new Date().toISOString(),
+          type: 'system',
+          message: 'Hospital command desk initialized. Ready for emergency dispatch.',
+        },
+      ],
+      nextRequestNumber: 1001,
+      lastSimulationAt: new Date().toISOString(),
+    };
+  }
 
   return {
     hospital: baseHospital,

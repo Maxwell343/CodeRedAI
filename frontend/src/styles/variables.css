@@ -1,13 +1,41 @@
 :root {
-  --color-background: #0b1220;
-  --color-surface: #111a2d;
-  --color-surface-2: #17233b;
-  --color-text: #e8eefc;
-  --color-muted: #9fb0d0;
-  --color-primary: #5cd6c5;
-  --color-danger: #ff6b6b;
-  --color-border: rgba(255, 255, 255, 0.12);
-  --radius-lg: 20px;
-  --radius-md: 14px;
-  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.35);
+  /* Dark Mode Palette */
+  --color-background: #080d1a;
+  --color-surface: #0f172a;
+  --color-surface-hover: #1e293b;
+  --color-surface-active: #334155;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-bright: rgba(255, 255, 255, 0.2);
+
+  /* Brand & Accent Colors */
+  --color-primary: #10b981;
+  --color-primary-hover: #059669;
+  --color-accent: #3b82f6;
+  --color-accent-hover: #2563eb;
+  
+  /* Emergency Status & Severity */
+  --color-critical: #ef4444;
+  --color-critical-glow: rgba(239, 68, 68, 0.35);
+  --color-high: #f97316;
+  --color-medium: #eab308;
+  --color-low: #10b981;
+
+  /* Text & Typography */
+  --color-text-main: #f8fafc;
+  --color-text-sub: #94a3b8;
+  --color-text-muted: #64748b;
+
+  /* Shadows & Glassmorphism */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.5);
+  --glass-bg: rgba(15, 23, 42, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --backdrop-blur: blur(16px);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
 }

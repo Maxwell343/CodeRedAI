@@ -1,6 +1,9 @@
 # CodeRedAI 🚨
 
-A comprehensive mobility and dispatch management system with distinct specialized portals for Hospitals, Drivers, and Administrators.
+**Author & Lead Architect**: Maxwell Mathew  
+**Repository**: [https://github.com/Maxwell343/CodeRedAI.git](https://github.com/Maxwell343/CodeRedAI.git)
+
+A production-grade emergency medical mobility and autonomous dispatch management system featuring real-time triage, driver routing, WhatsApp bot integration, and specialized portals for Hospitals, Drivers, and Administrators.
 
 ## Prerequisites
 
@@ -102,5 +105,27 @@ npm run dev
 
 ---
 
-## 🔐 Preset Testing Accounts
-To speed up development, the application has quick-fill test accounts pre-configured to log in bypassing manual entry. The default password for all preset accounts is `Password@123`.
+## 🔐 Preset Demo Accounts
+To speed up testing, the application has quick-fill demo accounts pre-seeded in the database:
+
+- **Hospitals** (Default Password: `Password@123`):
+  - `apollo.er@codered.ai` (Apollo Emergency Center)
+  - `lilavati.er@codered.ai` (Lilavati Hospital ER)
+  - `fortis.er@codered.ai` (Fortis Hospital ER)
+  - `kokilaben.er@codered.ai` (Kokilaben Hospital ER)
+  - `nanavati.er@codered.ai` (Nanavati Max ER)
+  - `rubyhall.er@codered.ai` (Ruby Hall Clinic ER)
+
+- **Drivers** (Default Password: `Password@123`):
+  - `driver.rajesh@codered.ai` (Rajesh Kumar - AMB-101)
+  - `driver.vikram@codered.ai` (Vikram Singh - AMB-102)
+  - `driver.amit@codered.ai` (Amit Sharma - AMB-103)
+  - `driver.suresh@codered.ai` (Suresh Patil - AMB-104)
+  - `driver.priya@codered.ai` (Priya Deshmukh - AMB-105)
+  - `driver.rohit@codered.ai` (Rohit Verma - AMB-106)
+
+- **Admins** (Default Password: `Admin@123`):
+  - `admin.ops@codered.ai` (Aarav Mehta - Chief Ops)
+  - `admin.verify@codered.ai` (Siya Iyer - Verification Lead)
+  - `admin.reviews@codered.ai` (Kabir Khan - Quality Admin)
+  - `admin.compliance@codered.ai` (Neha Desai - Compliance Admin)

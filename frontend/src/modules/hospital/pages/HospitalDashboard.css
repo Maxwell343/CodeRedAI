@@ -503,6 +503,12 @@
   align-items: start;
 }
 
+.dashboard-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .hospital-queue-layout {
   display: grid;
   grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);

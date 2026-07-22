@@ -14,7 +14,7 @@ import type {
   OpsEvent,
   PatientRequest,
 } from '@shared/types/hospitalOps.types';
-import { createInitialHospitalOpsState } from '@shared/utils/hospitalDemoData';
+import { createInitialHospitalOpsState, isDemoHospitalAccount } from '@shared/utils/hospitalDemoData';
 import { buildRoadRoute, distanceKm, fetchRoadRouteFromApi, routeDistanceKm } from '@shared/utils/hospitalOpsSimulator';
 import {
   fetchDriverStats,
@@ -998,7 +998,8 @@ export function DriverDashboard() {
       location: { ...opsState.hospital.location },
     };
 
-    const resetState = createInitialHospitalOpsState(hospitalRef);
+    const isDemo = isDemoHospitalAccount(hospitalRef.id, driverUser?.email);
+    const resetState = createInitialHospitalOpsState(hospitalRef, isDemo);
     updateLinkedState(resetState);
     setSelectedDriverId((previousDriverId) =>
       resolveDriverUnitId({

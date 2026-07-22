@@ -17,10 +17,7 @@ from typing import Any
 from bson import ObjectId
 from pymongo.errors import PyMongoError
 
-try:
-    from ..database import get_emergencies_collection
-except ImportError:
-    from database import get_emergencies_collection
+from database import get_emergencies_collection
 
 _logger = logging.getLogger(__name__)
 

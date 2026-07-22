@@ -8,26 +8,15 @@ from typing import Any, Dict, Optional
 from fastapi import HTTPException, status
 from pymongo.errors import DuplicateKeyError, PyMongoError
 
-try:
-    from ..database import get_admins_collection, get_drivers_collection, get_hospitals_collection
-    from ..schemas.auth import (
-        AdminSignupRequest,
-        DriverSignupRequest,
-        HospitalSignupRequest,
-        LoginRequest,
-    )
-    from ..utils.hashing import hash_password, verify_password
-    from ..utils.jwt_handler import create_access_token
-except ImportError:  # pragma: no cover - compatibility for `uvicorn app.main:app`
-    from database import get_admins_collection, get_drivers_collection, get_hospitals_collection
-    from schemas.auth import (
-        AdminSignupRequest,
-        DriverSignupRequest,
-        HospitalSignupRequest,
-        LoginRequest,
-    )
-    from utils.hashing import hash_password, verify_password
-    from utils.jwt_handler import create_access_token
+from database import get_admins_collection, get_drivers_collection, get_hospitals_collection
+from schemas.auth import (
+    AdminSignupRequest,
+    DriverSignupRequest,
+    HospitalSignupRequest,
+    LoginRequest,
+)
+from utils.hashing import hash_password, verify_password
+from utils.jwt_handler import create_access_token
 
 
 @dataclass

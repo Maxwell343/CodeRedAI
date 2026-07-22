@@ -10,8 +10,22 @@ import {
 
 const HOSPITAL_AUTH_STORAGE_KEY = 'codered-hospital-auth-v2';
 const DRIVER_AUTH_STORAGE_KEY = 'codered-driver-auth-v2';
-const FALLBACK_PRESET_EMAILS = Array.from({ length: 10 }, (_, index) => `hospital${index + 1}@gmail.com`);
-const FALLBACK_DRIVER_EMAILS = Array.from({ length: 8 }, (_, index) => `driver${index + 1}@gmail.com`);
+const FALLBACK_PRESET_EMAILS = [
+  'apollo.er@codered.ai',
+  'lilavati.er@codered.ai',
+  'fortis.er@codered.ai',
+  'kokilaben.er@codered.ai',
+  'nanavati.er@codered.ai',
+  'rubyhall.er@codered.ai',
+];
+const FALLBACK_DRIVER_EMAILS = [
+  'driver.rajesh@codered.ai',
+  'driver.vikram@codered.ai',
+  'driver.amit@codered.ai',
+  'driver.suresh@codered.ai',
+  'driver.priya@codered.ai',
+  'driver.rohit@codered.ai',
+];
 
 interface StoredAuthSession<TUser> {
   token: string;

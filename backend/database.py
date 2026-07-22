@@ -93,9 +93,29 @@ def init_indexes() -> None:
     get_emergencies_collection().create_index("assigned_driver_id", sparse=True)
     get_emergencies_collection().create_index("created_at")
 
+    # High-throughput query performance compound indexes
+    get_emergencies_collection().create_index(
+        [("hospital_status", 1), ("created_at", -1)],
+        name="hospital_status_created_idx",
+    )
+    get_emergencies_collection().create_index(
+        [("assigned_driver_id", 1), ("status", 1)],
+        name="driver_status_idx",
+        sparse=True,
+    )
+
 
 def verify_database_connection() -> None:
     _client.admin.command("ping")
+
+
+def close_database_connection() -> None:
+    """Gracefully close the MongoDB client connection pool."""
+    try:
+        _client.close()
+        _logger.info("MongoDB client connection pool closed successfully.")
+    except Exception as exc:
+        _logger.warning("Error closing MongoDB connection pool: %s", exc)
 
 
 def init_indexes_safe() -> bool:
