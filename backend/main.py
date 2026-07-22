@@ -26,7 +26,8 @@ _logger = logging.getLogger(__name__)
 
 def _get_cors_origins() -> list[str]:
     raw = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173")
-    return [origin.strip() for origin in raw.split(",") if origin.strip()]
+    origins = [origin.strip() for origin in raw.split(",") if origin.strip()]
+    return origins
 
 
 @asynccontextmanager
@@ -54,12 +55,13 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
-    # CORS Middleware configuration
+    # CORS Middleware configuration - dynamically allows Vercel, GitHub Pages, and Localhost
     app.add_middleware(
         CORSMiddleware,
         allow_origins=_get_cors_origins(),
+        allow_origin_regex=r"https://.*\.vercel\.app|https://.*\.github\.io|http://localhost:\d+|http://127\.0\.0\.1:\d+",
         allow_credentials=True,
-        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+        allow_methods=["*"],
         allow_headers=["*"],
     )
 
