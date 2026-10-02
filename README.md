@@ -1,6 +1,6 @@
 # CodeRedAI 🚨
 
-**Author & Lead Architect**: Maxwell Mathew  
+**Author**: Maxwell Mathew  
 **Repository**: [https://github.com/Maxwell343/CodeRedAI.git](https://github.com/Maxwell343/CodeRedAI.git)
 
 A production-grade emergency medical mobility and autonomous dispatch management system featuring real-time triage, driver routing, WhatsApp bot integration, and specialized portals for Hospitals, Drivers, and Administrators.
