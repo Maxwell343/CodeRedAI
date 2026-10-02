@@ -2,6 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 
 import { AppNavbar } from "@shared/components/AppNavbar";
+import { EmergencyDeactivatedModal } from "@shared/components/EmergencyDeactivatedModal";
 import { routes } from './router';
 
 function getHashPath(): string {
@@ -46,6 +47,7 @@ export function App() {
     return (
       <div className="app-shell">
         <AppNavbar />
+        <EmergencyDeactivatedModal />
       </div>
     );
   }
@@ -56,6 +58,8 @@ export function App() {
     <div className="app-shell">
       <AppNavbar />
       <ActivePage />
+      <EmergencyDeactivatedModal />
     </div>
   );
 }
+
