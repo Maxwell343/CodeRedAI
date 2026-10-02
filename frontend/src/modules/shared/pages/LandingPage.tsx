@@ -1,5 +1,6 @@
 import { useState, type MouseEvent } from 'react';
 
+import { triggerEmergencyDeactivatedNotice } from '@shared/components/EmergencyDeactivatedModal';
 import './LandingPage.css';
 
 const heroStats = [
@@ -194,15 +195,14 @@ export default function LandingPage() {
           </p>
 
           <div className="hero-actions">
-            <a
-              href="https://wa.me/911234567890?text=HELP"
+            <button
+              type="button"
               className="btn btn-primary"
-              target="_blank"
-              rel="noreferrer"
+              onClick={triggerEmergencyDeactivatedNotice}
             >
               <WhatsAppIcon />
               Send Help Now
-            </a>
+            </button>
             <a className="btn btn-secondary" href="#how-it-works" onClick={handleScrollToHowItWorks}>
               See How It Works
             </a>
@@ -404,20 +404,29 @@ export default function LandingPage() {
           <h2>Give every patient a faster first response path.</h2>
         </div>
         <div className="cta-actions">
-          <a className="btn btn-primary" href="https://wa.me/911234567890?text=HELP" target="_blank" rel="noreferrer">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={triggerEmergencyDeactivatedNotice}
+          >
             <WhatsAppIcon />
             Send Help Now
-          </a>
+          </button>
           <a className="btn btn-secondary" href="#how-it-works" onClick={handleScrollToHowItWorks}>
             See How It Works
           </a>
         </div>
       </section>
 
-      <a className="mobile-emergency-cta" href="https://wa.me/911234567890?text=HELP" target="_blank" rel="noreferrer">
+      <button
+        type="button"
+        className="mobile-emergency-cta"
+        onClick={triggerEmergencyDeactivatedNotice}
+        aria-label="Send Help Now"
+      >
         <WhatsAppIcon />
         Send Help Now
-      </a>
+      </button>
     </main>
   );
 }
